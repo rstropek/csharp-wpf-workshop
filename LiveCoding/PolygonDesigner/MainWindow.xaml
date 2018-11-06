@@ -21,6 +21,10 @@
         </Grid.ColumnDefinitions>
 
         <Menu>
+            <MenuItem Header="_Polygons">
+                <MenuItem Header="_Generate" Command="{Binding Path=GenerateAndAddPolygonCommand}" />
+                <MenuItem Header="_Clip"  Command="{Binding Path=ClipPolygonsCommand}" />
+            </MenuItem>
             <MenuItem Header="_Generator" ItemsSource="{Binding Path=Generators}">
                 <MenuItem.ItemTemplate>
                     <DataTemplate>

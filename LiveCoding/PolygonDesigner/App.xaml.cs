@@ -26,6 +26,10 @@ namespace PolygonDesigner
             containerRegistry.Register<PolygonGenerator, RandomPolygonGenerator>("Random");
 
             containerRegistry.RegisterSingleton<PolygonManagementViewModel>();
+            containerRegistry.RegisterSingleton<PolygonClipper, SutherlandHodgman>();
+            containerRegistry.RegisterSingleton<PolygonGeneratorProvider, UnityPolygonGeneratorProvider>();
+
+            containerRegistry.RegisterSingleton<IDialogHandler, WpfDialogHandler>();
 
             //containerRegistry.RegisterInstance<AreaCalculator>(new MonteCarloAreaCalculator(new MonteCarloAreaCalculator.Options
             //{

@@ -5,13 +5,17 @@ VisualStudioVersion = 15.0.28218.60
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolygonDesigner", "PolygonDesigner\PolygonDesigner.csproj", "{7B70E20E-6635-4344-98AF-73CCBC7A041E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polygon.Core", "Polygon.Core\Polygon.Core.csproj", "{748C3C56-DFF6-44D0-A911-109A4DE45B46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Polygon.Core", "Polygon.Core\Polygon.Core.csproj", "{748C3C56-DFF6-44D0-A911-109A4DE45B46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polygon.Core.Tests", "Polygon.Core.Tests\Polygon.Core.Tests.csproj", "{C3CA769B-AB23-4371-AB96-81DC757F1F72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Polygon.Core.Tests", "Polygon.Core.Tests\Polygon.Core.Tests.csproj", "{C3CA769B-AB23-4371-AB96-81DC757F1F72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SideTopics", "SideTopics\SideTopics.csproj", "{0448A8F2-DB72-41F0-AE14-9FD637A15DE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SideTopics", "SideTopics\SideTopics.csproj", "{0448A8F2-DB72-41F0-AE14-9FD637A15DE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolygonDesigner.ViewLogic", "PolygonDesigner.ViewLogic\PolygonDesigner.ViewLogic.csproj", "{BADFB282-B8A0-42AA-BF05-2A83248934D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolygonDesigner.ViewLogic", "PolygonDesigner.ViewLogic\PolygonDesigner.ViewLogic.csproj", "{BADFB282-B8A0-42AA-BF05-2A83248934D0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Polygon.WebApi", "Polygon.WebApi\Polygon.WebApi.csproj", "{C6BF850F-036D-483A-B837-7C8600222268}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolygonDesigner.ViewLogic.Tests", "PolygonDesigner.ViewLogic.Tests\PolygonDesigner.ViewLogic.Tests.csproj", "{BFB9554B-EB09-419A-A75E-A927FE553CDD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{BADFB282-B8A0-42AA-BF05-2A83248934D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BADFB282-B8A0-42AA-BF05-2A83248934D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BADFB282-B8A0-42AA-BF05-2A83248934D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6BF850F-036D-483A-B837-7C8600222268}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6BF850F-036D-483A-B837-7C8600222268}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6BF850F-036D-483A-B837-7C8600222268}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6BF850F-036D-483A-B837-7C8600222268}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFB9554B-EB09-419A-A75E-A927FE553CDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFB9554B-EB09-419A-A75E-A927FE553CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFB9554B-EB09-419A-A75E-A927FE553CDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFB9554B-EB09-419A-A75E-A927FE553CDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
