@@ -6,7 +6,7 @@ namespace SideTopics
     {
         static void Main(string[] args)
         {
-            ImmutableCollections.ShowImmutables();
+            ReactiveX.ShowRx();
         }
     }
 }

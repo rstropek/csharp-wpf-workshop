@@ -6,7 +6,15 @@
              xmlns:local="clr-namespace:PolygonDesigner"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
     <StackPanel>
         <TextBox Margin="5" Text="{Binding Path=SelectedPolygon.Description}" />
+        <Button Margin="5,0,5,5" Command="{Binding Path=CalculateAreaForSelectedPolygonCommand}">Calculate Area</Button>
+        <Button Margin="5,0,5,5" Command="{Binding Path=CancelAreaCalculationCommand}">Cancel Calculation</Button>
+        <ProgressBar Height="25" Margin="5,0,5,0" Minimum="0" Maximum="1" Value="{Binding Path=Progress, Mode=OneWay}" />
+        <TextBlock FontSize="48" Text="{Binding Path=Area, StringFormat=0.00}" 
+                   Visibility="{Binding Path=AreaAvailable, Converter={StaticResource BooleanToVisibilityConverter}}" />
     </StackPanel>
 </UserControl>

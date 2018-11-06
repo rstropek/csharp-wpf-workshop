@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Polygon.Core;
+using Polygon.Core.Generators;
 
 namespace Polygon.WebApi
 {
@@ -28,13 +29,36 @@ namespace Polygon.WebApi
             var source = PathMarkupConverter.Convert(request.SourcePolygon);
             var clip = PathMarkupConverter.Convert(request.ClipPolygon);
 
-            // TODO: Clip source
+            var result = new SutherlandHodgman().GetIntersectedPolygon(source, clip);
 
-            return Ok(new PolygonClipResponsePayload
+            return Ok(new PolygonResultPayload
             {
-                SourcePolygon = request.SourcePolygon,
-                ClipPolygon = request.ClipPolygon,
-                ResultPolygon = PathMarkupConverter.Convert(source)
+                ResultPolygon = PathMarkupConverter.Convert(result)
+            });
+        }
+
+        [HttpPost]
+        [Route("generate")]
+        public ActionResult Post([FromBody] PolygonGenerateRequestPayload request)
+        {
+            if (string.IsNullOrEmpty(request.Generator))
+            {
+                return BadRequest("Missing clipping polygon");
+            }
+
+            var type = typeof(PolygonGenerator).Assembly.DefinedTypes
+                .FirstOrDefault(t => t.FullName == request.Generator);
+            if (type == null)
+            {
+                return BadRequest("Invalid generator name");
+            }
+
+            var generator = (PolygonGenerator)Activator.CreateInstance(type);
+            var polygon = generator.Generate(request.MaxSideLength);
+
+            return Ok(new PolygonResultPayload
+            {
+                ResultPolygon = PathMarkupConverter.Convert(polygon)
             });
         }
     }

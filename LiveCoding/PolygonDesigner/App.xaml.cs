@@ -28,6 +28,12 @@ namespace PolygonDesigner
             containerRegistry.RegisterSingleton<PolygonManagementViewModel>();
             containerRegistry.RegisterSingleton<PolygonClipper, SutherlandHodgman>();
             containerRegistry.RegisterSingleton<PolygonGeneratorProvider, UnityPolygonGeneratorProvider>();
+            containerRegistry.RegisterInstance<AreaCalculator>(new MonteCarloAreaCalculator(new MonteCarloAreaCalculator.Options
+            {
+                SimulationDuration = TimeSpan.FromSeconds(5d),
+                ProgressReportingIterations = 100000
+            }));
+
 
             containerRegistry.RegisterSingleton<IDialogHandler, WpfDialogHandler>();
 

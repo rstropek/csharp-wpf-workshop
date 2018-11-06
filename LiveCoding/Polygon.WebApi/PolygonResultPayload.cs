@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 
 namespace Polygon.WebApi
 {
-    public class PolygonClipResponsePayload
+    public class PolygonResultPayload
     {
-        public string SourcePolygon { get; set; }
-        public string ClipPolygon { get; set; }
         public string ResultPolygon { get; set; }
     }
 }
