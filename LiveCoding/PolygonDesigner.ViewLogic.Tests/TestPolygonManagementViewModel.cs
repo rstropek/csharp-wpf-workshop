@@ -2,7 +2,9 @@ using Moq;
 using Polygon.Core;
 using Polygon.Core.Generators;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Unity;
 using Unity.Resolution;
@@ -18,6 +20,15 @@ namespace PolygonDesigner.ViewLogic.Tests
             mockGenerator.Setup(x => x.Generate(It.IsAny<double>()))
                 .Returns(new ReadOnlyMemory<Point>(Array.Empty<Point>()));
             return mockGenerator;
+        }
+
+        private (TaskCompletionSource<double> tcs, Mock<AreaCalculator> calculator) GetMockAreaCalculator()
+        {
+            var tcs = new TaskCompletionSource<double>();
+            var mockCalculator = new Mock<AreaCalculator>();
+            mockCalculator.Setup(x => x.CalculateAreaAsync(It.IsAny<ReadOnlyMemory<Point>>(), It.IsAny<CancellationToken>(), It.IsAny<IProgress<AreaCalculationProgress>>()))
+                .Returns(tcs.Task);
+            return (tcs, mockCalculator);
         }
 
         [Fact]
@@ -99,6 +110,79 @@ namespace PolygonDesigner.ViewLogic.Tests
         {
             await Task.Delay(100);
             Assert.True(1 == 1);
+        }
+
+
+        [Fact]
+        public void CalculateAreaForSelectedPolygon()
+        {
+            (var tcs, var mockCalculator) = GetMockAreaCalculator();
+
+            var vm = new PolygonManagementViewModel(null, null, null, mockCalculator.Object);
+            vm.SelectedPolygon = new Polygon();
+            var receivedEvents = new HashSet<string>();
+            vm.PropertyChanged += (_, ea) => receivedEvents.Add(ea.PropertyName);
+            var commandExecStates = (Calculate: false, Cancel: false);
+            vm.CalculateAreaForSelectedPolygonCommand.CanExecuteChanged += (_, __) => commandExecStates.Calculate = true;
+            vm.CancelAreaCalculationCommand.CanExecuteChanged += (_, __) => commandExecStates.Cancel = true;
+
+            // Check state before calculation starts
+            Assert.True(vm.CalculateAreaForSelectedPolygonCommand.CanExecute());
+            Assert.False(vm.IsCalculatingArea);
+            Assert.False(vm.CancelAreaCalculationCommand.CanExecute());
+            Assert.Null(vm.Area);
+            Assert.False(vm.AreaAvailable);
+
+            // Start calculation
+            vm.CalculateAreaForSelectedPolygonCommand.Execute();
+
+            // Check state after starting the calculation
+            Assert.True(vm.IsCalculatingArea);
+            Assert.Contains(nameof(PolygonManagementViewModel.IsCalculatingArea), receivedEvents);
+            Assert.False(vm.CalculateAreaForSelectedPolygonCommand.CanExecute());
+            Assert.True(commandExecStates.Calculate);
+            Assert.True(vm.CancelAreaCalculationCommand.CanExecute());
+            Assert.True(commandExecStates.Cancel);
+
+            // Simulate finishing of calculation
+            commandExecStates.Calculate = commandExecStates.Cancel = false;
+            receivedEvents.Clear();
+            tcs.SetResult(42d);
+
+            // Check state after calculation
+            Assert.True(vm.CalculateAreaForSelectedPolygonCommand.CanExecute());
+            Assert.True(commandExecStates.Calculate);
+            Assert.False(vm.CancelAreaCalculationCommand.CanExecute());
+            Assert.True(commandExecStates.Cancel);
+            Assert.False(vm.IsCalculatingArea);
+            Assert.Contains(nameof(PolygonManagementViewModel.IsCalculatingArea), receivedEvents);
+            Assert.Equal(42d, vm.Area);
+            Assert.Contains(nameof(PolygonManagementViewModel.Area), receivedEvents);
+            Assert.True(vm.AreaAvailable);
+            Assert.Contains(nameof(PolygonManagementViewModel.AreaAvailable), receivedEvents);
+        }
+
+        [Fact]
+        public void CancelAreaCalculation()
+        {
+            (var tcs, var mockCalculator) = GetMockAreaCalculator();
+
+            var vm = new PolygonManagementViewModel(null, null, null, mockCalculator.Object);
+            vm.SelectedPolygon = new Polygon();
+            vm.CalculateAreaForSelectedPolygonCommand.Execute();
+            tcs.SetCanceled();
+
+            // Check state after cancellation
+            Assert.Null(vm.Area);
+            Assert.True(vm.CalculateAreaForSelectedPolygonCommand.CanExecute());
+            Assert.False(vm.CancelAreaCalculationCommand.CanExecute());
+        }
+
+        [Fact]
+        public void CalculationNotPossibleIfNoPolygonSelected()
+        {
+            var vm = new PolygonManagementViewModel(null, null, null, new Mock<AreaCalculator>().Object);
+            Assert.False(vm.CalculateAreaForSelectedPolygonCommand.CanExecute());
         }
     }
 }

@@ -5,6 +5,7 @@ using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -55,6 +56,8 @@ namespace PolygonDesigner.ViewLogic
                 Generators = GetGeneratorsFromContainer(generatorProvider);
                 SelectedPolygonGenerator = Generators.LastOrDefault()?.Generator;
             }
+
+            MouseCommand = new DelegateCommand<Polygon>((x) => SelectedPolygon = x);
         }
 
         private void ClipPolygons()
@@ -255,5 +258,7 @@ namespace PolygonDesigner.ViewLogic
         }
 
         private CancellationTokenSource CancelSource;
+
+        public DelegateCommand<Polygon> MouseCommand { get; }
     }
 }
